@@ -38,7 +38,12 @@ Samuel Yu
 
 ### Classes
 
-- << You should have a list of each of your classes with a description >>
+- Cloud - Makes the cloud image and puts it on the screen. It moves the clouds as the screen is moving 
+- Controller- Controls the entire program. It controls the movement of the screen and all the actions of the user. 
+- Player- Controls the user and makes the player up, and down and checks whether it makes contact with any of the pipes.
+- Floor- Makes the floor and as the background is moving, the floor is moving 
+- Pipes- Makes the Pipes and generates the height for the top tip and the bottom. Also has a hitbox and checks whether the player hits the tubes 
+
 
 ## ATP
 
