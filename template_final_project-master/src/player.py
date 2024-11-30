@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.image = image
         self.contact = False
         
-    def movefoward(self):
+    def move(self):
         """
         Moves the face foward by 1
         Args: None 
@@ -19,21 +19,7 @@ class Player(pygame.sprite.Sprite):
         """
         pass
     
-    def moveup(self):
-        """
-        Moves the face up by 1
-        Args: None
-        Return: None 
-        """
-        pass 
     
-    def movedown(self):
-        """
-        Moves the face down by 1 
-        Args: None 
-        Return: None 
-        """
-        pass
     
     def checkContact(self):
         """
