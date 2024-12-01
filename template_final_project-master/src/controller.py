@@ -1,4 +1,5 @@
 import pygame
+import pygame.camera
 from src.player import Player
 from src.cloud import Cloud 
 from src.pipes import Pipes
@@ -12,30 +13,36 @@ class Controls:
     def __init__(self):
         pygame.init()
         pygame.event.pump()
+        
             
     def startloop(self):
         pass  
     
     def mainloop(self):
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        cloudOne = Cloud()
-        cloudTwo = Cloud()
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        cloudOne = Cloud(50, 50)
+        cloudTwo = Cloud(325, 25)
         pipeOne = Pipes()
         pipeTwo = Pipes()
-        #bird = Player()
+        bird = Player(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 2 )
+       
         
         while(True):
             #1. Handle events
-            self.screen.fill((0, 255, 255))
+            screen.fill((0, 255, 255))
             
-            cloudOne.draw(self.screen)
-            cloudTwo.draw(self.screen)
+            cloudOne.draw(screen)
+            cloudTwo.draw(screen)
             
-            pipeOne.drawPipes(self.screen)
+            pipeOne.drawPipes(screen)
             pipeOne.updatePosition()
             
-            pipeTwo.drawPipes(self.screen)
+            pipeTwo.drawPipes(screen)
             pipeTwo.updatePosition()
+            
+            bird.display(screen)
+            
+            bird.moveDown()
             
             if 200 < pipeOne.xpos < 201:
                 pipeTwo = Pipes()
@@ -50,12 +57,15 @@ class Controls:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        bird.move()
             
-               # elif event.key == pygame.K_SPACE:
-                 #   bird.move()
+                
                     
 
             #2. detect collisions and update models
+            
 
             #3. Redraw next frame
 

@@ -5,7 +5,7 @@ SCREEN_WIDTH = 500
 
 class Cloud(pygame.sprite.Sprite):
     
-    def __init__(self, img="assets/cloud.png"):
+    def __init__(self,x,y, img="assets/cloud.png"):
         """
         Initializes the Cloud object
         Args:
@@ -14,10 +14,10 @@ class Cloud(pygame.sprite.Sprite):
         """
         super().__init__()
         self.image = pygame.image.load(img)
-        self.image = pygame.transform.scale(self.image, (SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3))
+        self.image = pygame.transform.scale(self.image, (SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4))
         self.rect = self.image.get_rect()
-        self.rect.x = random.randint(SCREEN_WIDTH - 450, SCREEN_HEIGHT - 50)
-        self.rect.y = random.randint(SCREEN_HEIGHT - 450, SCREEN_HEIGHT- 50)
+        self.rect.x = x
+        self.rect.y = y
     
         
     def draw(self, screen):
