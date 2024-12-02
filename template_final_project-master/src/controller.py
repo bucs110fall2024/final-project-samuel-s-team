@@ -14,7 +14,6 @@ class Controls:
         pygame.init()
         pygame.event.pump()
         
-            
     def startloop(self):
         pass  
     
@@ -24,8 +23,8 @@ class Controls:
         cloudTwo = Cloud(325, 25)
         pipeOne = Pipes()
         pipeTwo = Pipes()
-        bird = Player(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 2 )
-       
+        bird = Player(70, SCREEN_HEIGHT / 2 )
+        score = 0
         
         while(True):
             #1. Handle events
@@ -46,11 +45,11 @@ class Controls:
             
             if 200 < pipeOne.xpos < 201:
                 pipeTwo = Pipes()
+                
             
             if pipeOne.xpos < -50:
                 pipeOne = Pipes()
-               
-            
+                
             pygame.display.update()
             
             for event in pygame.event.get():
@@ -59,15 +58,27 @@ class Controls:
                     exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        bird.move()
+                        bird.moveUp()
+            
+            #2. detect collisions and update models
+            if bird.getRect().colliderect(pipeOne.rectOne()) or bird.getRect().colliderect(pipeOne.rectTwo()):
+                print(score)
+                break
+            
+            if bird.getRect().colliderect(pipeTwo.rectOne()) or bird.getRect().colliderect(pipeTwo.rectTwo()):
+                print(score)
+                break
+            
+            if bird.getY() >= 490 or bird.getY() <= 70:
+                print(score)
+                break
+            
+            #3. Redraw next frame
+           
             
                 
-                    
-
-            #2. detect collisions and update models
             
-
-            #3. Redraw next frame
+            
 
             #4. Display next frame
     
