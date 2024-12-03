@@ -1,5 +1,8 @@
 import pygame
-import pygame.camera
+import pygame_menu
+import pygame_menu.baseimage
+import pygame_menu.locals
+import pygame_menu.themes
 from src.player import Player
 from src.cloud import Cloud 
 from src.pipes import Pipes
@@ -11,46 +14,95 @@ class Controls:
     def __init__(self):
         pygame.init()
         pygame.event.pump()
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.cloudOne = Cloud(50, 50)
+        self.cloudTwo = Cloud(325, 25)
+        self.pipeOne = Pipes()
+        self.pipeTwo = Pipes()
+        self.bird = Player(70, SCREEN_HEIGHT / 2 )
+        self.score = 0
+        self.font = pygame.font.Font(None, 72) 
+        self.collision_occured = False
+        
+        self.state = "START"
+        
+    def startgame(self):
+        self.resetgame()
+        self.state = "GAME"
         
     def startloop(self):
-        pass  
+        self.screen.fill((0, 255, 255))
+        self.menu = pygame_menu.Menu("Angry Flap", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, theme = pygame_menu.themes.THEME_GREEN )
+        
+        self.menu.add.button(
+            "Start", self.startgame, align=pygame_menu.locals.ALIGN_CENTER
+        )
+
+        while self.state == "START":
+            self.menu.update(pygame.event.get())
+            self.menu.draw(self.screen)
+            pygame.display.flip()
+            
+    def resetgame(self):
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.cloudOne = Cloud(50, 50)
+        self.cloudTwo = Cloud(325, 25)
+        self.pipeOne = Pipes()
+        self.pipeTwo = Pipes()
+        self.bird = Player(70, SCREEN_HEIGHT / 2 )
+        self.score = 0
+        self.font = pygame.font.Font(None, 72) 
+        self.collision_occured = False
+        
     
-    def mainloop(self):
-        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        cloudOne = Cloud(50, 50)
-        cloudTwo = Cloud(325, 25)
-        pipeOne = Pipes()
-        pipeTwo = Pipes()
-        bird = Player(70, SCREEN_HEIGHT / 2 )
-        score = 0
-        font = pygame.font.Font(None, 72) 
+    def endgame(self):
+            self.state = "OUT"
+             
+    def endloop(self):
+        self.gameOver = "Final Score " , str(self.score)
+        self.screen.fill((0, 255, 255))
        
+        self.menu = pygame_menu.Menu("GAME OVER", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, theme = pygame_menu.themes.THEME_GREEN )
+        self.menu.add.label(f"Final Score: {self.score} ", font_size=28)
         
-        collision_occured = False
+        self.menu.add.button(
+            "Start Over", self.startgame, align=pygame_menu.locals.ALIGN_CENTER
+        )
         
-        while(True):
+        self.menu.add.button(
+            "End Game", self.endgame, align = pygame_menu.locals.ALIGN_CENTER
+        
+        )
+        while self.state == "END":
+            self.menu.update(pygame.event.get())
+            self.menu.draw(self.screen)
+            pygame.display.flip()
+        
+    def gameloop(self):
+         while self.state == "GAME":
             #1. Handle events
-            screen.fill((0, 255, 255))
+            self.screen.fill((0, 255, 255))
             
-            cloudOne.draw(screen)
-            cloudTwo.draw(screen)
             
-            pipeOne.drawPipes(screen)
-            pipeOne.updatePosition()
+            self.cloudOne.draw(self.screen)
+            self.cloudTwo.draw(self.screen)
             
-            pipeTwo.drawPipes(screen)
-            pipeTwo.updatePosition()
+            self.pipeOne.drawPipes(self.screen)
+            self.pipeOne.updatePosition()
             
-            bird.display(screen)
+            self.pipeTwo.drawPipes(self.screen)
+            self.pipeTwo.updatePosition()
             
-            bird.moveDown()
+            self.bird.display(self.screen)
             
-            if 200 < pipeOne.xpos < 201:
-                pipeTwo = Pipes()
+            self.bird.moveDown()
+            
+            if 200 < self.pipeOne.xpos < 201:
+                self.pipeTwo = Pipes()
                 
             
-            if pipeOne.xpos < -50:
-                pipeOne = Pipes()
+            if self.pipeOne.xpos < -50:
+                self.pipeOne = Pipes()
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -58,43 +110,45 @@ class Controls:
                     exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        bird.moveUp()
+                        self.bird.moveUp()
             
             #2. detect collisions and update models
-            if bird.getRect().colliderect(pipeOne.rectOne()) or bird.getRect().colliderect(pipeOne.rectTwo()):
-                print(score)
-                break
+            if self.bird.getRect().colliderect(self.pipeOne.rectOne()) or self.bird.getRect().colliderect(self.pipeOne.rectTwo()):
+                self.state  ="END"
+               
             
-            if bird.getRect().colliderect(pipeTwo.rectOne()) or bird.getRect().colliderect(pipeTwo.rectTwo()):
-                print(score)
-                break
+            if self.bird.getRect().colliderect(self.pipeTwo.rectOne()) or self.bird.getRect().colliderect(self.pipeTwo.rectTwo()):
+                self.state = "END"
             
-            if bird.getY() >= 500 or bird.getY() <= -50:
-                print(score)
-                break
+            if self.bird.getY() >= 500 or self.bird.getY() <= -50:
+                self.state = "END"
             
-            if bird.getRect().colliderect(pipeOne.scorePoint()) or bird.getRect().colliderect(pipeTwo.scorePoint()):
-                if collision_occured == False: 
-                    score += 1
-                    collision_occured = True
+            if self.bird.getRect().colliderect(self.pipeOne.scorePoint()) or self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
+                if self.collision_occured == False: 
+                    self.score += 1
+                    self.collision_occured = True
             
-            if not bird.getRect().colliderect(pipeOne.scorePoint()) and not bird.getRect().colliderect(pipeTwo.scorePoint()):
-                    collision_occured = False 
+            if not self.bird.getRect().colliderect(self.pipeOne.scorePoint()) and not self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
+                    self.collision_occured = False 
             #3. Redraw next frame
            
-            number = font.render(str(score), True, (255, 255, 255))  
+            number = self.font.render(str(self.score), True, (255, 255, 255))  
             text_rect = number.get_rect()
             text_rect.topleft = (10, 10) 
-            screen.blit(number, text_rect)
+            self.screen.blit(number, text_rect)
             
             pygame.display.update()
-           
             
-                
-            
-            
-
-            #4. Display next frame
+    def mainloop(self):
+        while True: 
+            if self.state == "GAME":
+                self.score = 0
+                self.gameloop()
+            elif self.state == "END":
+                self.endloop()
+            elif self.state == "START":
+               self.startloop()
+            elif self.state == "OUT":
+                break
     
-    def endloop(self):
-        pass
+    

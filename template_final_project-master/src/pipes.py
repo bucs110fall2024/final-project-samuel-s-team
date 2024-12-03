@@ -10,7 +10,7 @@ class Pipes:
     def __init__(self):
             
         self.topPipe = random.randint(25,225)
-        self.bottomPipe = random.randint(320, 500)
+        self.bottomPipe = random.randint(350, 500)
         self.width = 50
         self.xpos = SCREEN_WIDTH - self.width
         self.difference = 0
@@ -19,13 +19,13 @@ class Pipes:
     def updatePosition(self):
         self.xpos -= SPEED
             
-            
     def drawPipes(self, screen):
         self.difference = self.topPipe + ( SCREEN_HEIGHT - self.bottomPipe)
         pygame.draw.rect(screen, GREEN, (self.xpos, 0, self.width, self.topPipe))
         pygame.draw.rect(screen, GREEN, (self.xpos, self.bottomPipe, self.width, SCREEN_HEIGHT - self.bottomPipe))
         
         self.checkRect = pygame.Rect(self.xpos + self.width, self.topPipe, self.width, SCREEN_HEIGHT - self.difference)
+        
     def xPosition(self):
         return self.xpos
           
