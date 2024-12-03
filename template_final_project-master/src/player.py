@@ -1,5 +1,4 @@
 import pygame
-
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT= 500
 GRAVITY = .0001
@@ -17,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__()
         self.image = pygame.image.load(img)
-        self.image = pygame.transform.scale(self.image, (70, 70))
+        self.image = pygame.transform.scale(self.image, (60, 60))
         self.rect = self.image.get_rect()
         self.x = y
         self.y = x
@@ -38,7 +37,6 @@ class Player(pygame.sprite.Sprite):
             self.acceleration = GRAVITY
             self.up = False
             
-        
         self.rect.x = self.x
         self.rect.y = self.y
         screen.blit(self.image, self.rect)

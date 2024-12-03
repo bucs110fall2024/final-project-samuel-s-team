@@ -6,8 +6,6 @@ from src.pipes import Pipes
 
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
-GREEN = (3, 252, 11)
-
 
 class Controls:
     def __init__(self):
@@ -25,6 +23,10 @@ class Controls:
         pipeTwo = Pipes()
         bird = Player(70, SCREEN_HEIGHT / 2 )
         score = 0
+        font = pygame.font.Font(None, 72) 
+       
+        
+        collision_occured = False
         
         while(True):
             #1. Handle events
@@ -49,8 +51,6 @@ class Controls:
             
             if pipeOne.xpos < -50:
                 pipeOne = Pipes()
-                
-            pygame.display.update()
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -69,11 +69,25 @@ class Controls:
                 print(score)
                 break
             
-            if bird.getY() >= 490 or bird.getY() <= 70:
+            if bird.getY() >= 500 or bird.getY() <= -50:
                 print(score)
                 break
             
+            if bird.getRect().colliderect(pipeOne.scorePoint()) or bird.getRect().colliderect(pipeTwo.scorePoint()):
+                if collision_occured == False: 
+                    score += 1
+                    collision_occured = True
+            
+            if not bird.getRect().colliderect(pipeOne.scorePoint()) and not bird.getRect().colliderect(pipeTwo.scorePoint()):
+                    collision_occured = False 
             #3. Redraw next frame
+           
+            number = font.render(str(score), True, (255, 255, 255))  
+            text_rect = number.get_rect()
+            text_rect.topleft = (10, 10) 
+            screen.blit(number, text_rect)
+            
+            pygame.display.update()
            
             
                 
