@@ -49,6 +49,7 @@ class Player(pygame.sprite.Sprite):
             self.speed += self.acceleration
            
     def moveUp(self):
+        
         """
         Makes the player jump by reversing the gravity 
         """

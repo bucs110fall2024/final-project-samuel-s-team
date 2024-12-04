@@ -10,8 +10,7 @@ class Pipes:
     def __init__(self):
         """
         Initiates the Pipe Class 
-        """
-            
+        """    
         self.topPipe = random.randint(50,225)
         self.bottomPipe = random.randint(350, 450)
         self.width = 50
