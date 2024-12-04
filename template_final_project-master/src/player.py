@@ -29,6 +29,11 @@ class Player(pygame.sprite.Sprite):
         
     
     def display(self, screen):
+        """
+        Updates and draws the player on the screen while handling the gravity and acceleration of the player 
+        Args:
+            screen (_type_): _description_
+        """
         if self.up == True: 
             self.upTimer += 1
             
@@ -44,19 +49,31 @@ class Player(pygame.sprite.Sprite):
             self.speed += self.acceleration
            
     def moveUp(self):
+        """
+        Makes the player jump by reversing the gravity 
+        """
         self.up = True
-        #self.speed = TERMINAL_VELOCITY
         self.acceleration = -UP_SPEED
     
     def moveDown(self):
+        """
+        Makes the player go down by making the gravity positive 
+        """
         self.y += self.speed
         
     def getY(self):
+        """
+        Returns the y-position of the player 
+        Returns:
+           self.y (int): Current y position of the player 
+        """
         return self.y
-    
-    def getX(self):
-        return self.x
      
     def getRect(self): 
-        return pygame.Rect(self.x, self.y, 70, 70)
+        """
+        Returns the rectangle that is used to check for collision 
+        Returns:
+            pygame.Rect: Rectangle that represents the position of the player 
+        """
+        return pygame.Rect(self.x, self.y, 60, 60)
     

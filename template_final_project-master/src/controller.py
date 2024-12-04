@@ -12,6 +12,9 @@ SCREEN_HEIGHT = 500
 
 class Controls:
     def __init__(self):
+        """
+        Initializes the Control Class
+        """
         pygame.init()
         pygame.event.pump()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -23,14 +26,19 @@ class Controls:
         self.score = 0
         self.font = pygame.font.Font(None, 72) 
         self.collision_occured = False
-        
         self.state = "START"
         
     def startgame(self):
+        """
+        This class starts or resets the angry flap game once the player presses the start or restart button
+        """
         self.resetgame()
         self.state = "GAME"
         
     def startloop(self):
+        """
+        This is the start loop where the player first goes when the game is opened. The player clicks a button called Start and it starts the game 
+        """
         self.screen.fill((0, 255, 255))
         self.menu = pygame_menu.Menu("Angry Flap", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, theme = pygame_menu.themes.THEME_GREEN )
         
@@ -44,6 +52,9 @@ class Controls:
             pygame.display.flip()
             
     def resetgame(self):
+        """
+        Resets the entire game if the user wants to play the game again
+        """
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.cloudOne = Cloud(50, 50)
         self.cloudTwo = Cloud(325, 25)
@@ -54,11 +65,17 @@ class Controls:
         self.font = pygame.font.Font(None, 72) 
         self.collision_occured = False
         
-    
     def endgame(self):
-            self.state = "OUT"
+        """
+        Changes the state of the game to out which ends pygame
+        """
+        self.state = "OUT"
              
     def endloop(self):
+        """
+        When the user collides with the pipes and the end screen pulls up giving the user the option to either start over or 
+        quit the game 
+        """
         self.gameOver = "Final Score " , str(self.score)
         self.screen.fill((0, 255, 255))
        
@@ -79,10 +96,13 @@ class Controls:
             pygame.display.flip()
         
     def gameloop(self):
-         while self.state == "GAME":
+        """
+        Main game loop where pipes the main game runs. 
+        
+        """
+        while self.state == "GAME":
             #1. Handle events
             self.screen.fill((0, 255, 255))
-            
             
             self.cloudOne.draw(self.screen)
             self.cloudTwo.draw(self.screen)
@@ -94,13 +114,11 @@ class Controls:
             self.pipeTwo.updatePosition()
             
             self.bird.display(self.screen)
-            
             self.bird.moveDown()
             
             if 200 < self.pipeOne.xpos < 201:
                 self.pipeTwo = Pipes()
                 
-            
             if self.pipeOne.xpos < -50:
                 self.pipeOne = Pipes()
             
@@ -112,11 +130,9 @@ class Controls:
                     if event.key == pygame.K_SPACE:
                         self.bird.moveUp()
             
-            #2. detect collisions and update models
             if self.bird.getRect().colliderect(self.pipeOne.rectOne()) or self.bird.getRect().colliderect(self.pipeOne.rectTwo()):
                 self.state  ="END"
                
-            
             if self.bird.getRect().colliderect(self.pipeTwo.rectOne()) or self.bird.getRect().colliderect(self.pipeTwo.rectTwo()):
                 self.state = "END"
             
@@ -130,8 +146,7 @@ class Controls:
             
             if not self.bird.getRect().colliderect(self.pipeOne.scorePoint()) and not self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
                     self.collision_occured = False 
-            #3. Redraw next frame
-           
+            
             number = self.font.render(str(self.score), True, (255, 255, 255))  
             text_rect = number.get_rect()
             text_rect.topleft = (10, 10) 
@@ -140,6 +155,9 @@ class Controls:
             pygame.display.update()
             
     def mainloop(self):
+        """
+        This is the main loop where the entire game is controlled and the menus are figured out. 
+        """
         while True: 
             if self.state == "GAME":
                 self.score = 0
@@ -150,5 +168,3 @@ class Controls:
                self.startloop()
             elif self.state == "OUT":
                 break
-    
-    

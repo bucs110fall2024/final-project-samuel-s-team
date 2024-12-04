@@ -7,10 +7,11 @@ class Cloud(pygame.sprite.Sprite):
     
     def __init__(self,x,y, img="assets/cloud.png"):
         """
-        Initializes the Cloud object
+        Initializes the Cloud Class
         Args:
-            xpos: int -  Initializes the x- position of the cloud 
-            ypos: int - Initializes the y- position of the cloud 
+            x (int): x-position of the cloud 
+            y (_type_): y-position of the cloud 
+            img ("assets/cloud.png") - Cloud iamge 
         """
         super().__init__()
         self.image = pygame.image.load(img)
@@ -20,5 +21,10 @@ class Cloud(pygame.sprite.Sprite):
         self.rect.y = y
     
     def draw(self, screen):
+        """
+        Draws the clouds onto the screen
+        Args:
+            screen : The pygame screen is sent to this method for the clouds to be put on it 
+        """
         screen.blit(self.image, self.rect)
         
