@@ -1,16 +1,17 @@
 import pygame
+
 SCREEN_WIDTH = 500
-SCREEN_HEIGHT= 500
-GRAVITY = .0001
-UP_SPEED = .001
-JUMP_DURATION = 200
+SCREEN_HEIGHT = 500
+GRAVITY = 0.001
+UP_SPEED = 0.01
+JUMP_DURATION = 100
 TERMINAL_VELOCITY = 1
 
+
 class Player(pygame.sprite.Sprite):
-    
-    def __init__(self,x,y, img="assets/bird.png"):
+    def __init__(self, x, y, img="assets/bird.png"):
         """
-        Initializes the Player Object 
+        Initializes the Player Object
         Args:
             image: str - path to img file
         """
@@ -26,54 +27,52 @@ class Player(pygame.sprite.Sprite):
         self.acceleration = GRAVITY
         self.upTimer = 0
         self.up = False
-        
-    
+
     def display(self, screen):
         """
-        Updates and draws the player on the screen while handling the gravity and acceleration of the player 
+        Updates and draws the player on the screen while handling the gravity and acceleration of the player
         Args:
             screen (_type_): _description_
         """
-        if self.up == True: 
+        if self.up:
             self.upTimer += 1
-            
+
         if self.upTimer == JUMP_DURATION:
             self.upTimer = 0
             self.acceleration = GRAVITY
             self.up = False
-            
+
         self.rect.x = self.x
         self.rect.y = self.y
         screen.blit(self.image, self.rect)
         if self.speed < TERMINAL_VELOCITY:
             self.speed += self.acceleration
-           
+
     def moveUp(self):
         """
-        Makes the player jump by reversing the gravity 
+        Makes the player jump by reversing the gravity
         """
         self.up = True
         self.acceleration = -UP_SPEED
-    
+
     def moveDown(self):
         """
-        Makes the player go down by making the gravity positive 
+        Makes the player go down by making the gravity positive
         """
         self.y += self.speed
-        
+
     def getY(self):
         """
-        Returns the y-position of the player 
+        Returns the y-position of the player
         Returns:
-           self.y (int): Current y position of the player 
+           self.y (int): Current y position of the player
         """
         return self.y
-     
-    def getRect(self): 
+
+    def getRect(self):
         """
-        Returns the rectangle that is used to check for collision 
+        Returns the rectangle that is used to check for collision
         Returns:
-            pygame.Rect: Rectangle that represents the position of the player 
+            pygame.Rect: Rectangle that represents the position of the player
         """
         return pygame.Rect(self.x, self.y, 60, 60)
-    
