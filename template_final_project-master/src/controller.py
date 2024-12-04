@@ -100,28 +100,8 @@ class Controls:
         Main game loop where pipes the main game runs. 
         
         """
+        
         while self.state == "GAME":
-            #1. Handle events
-            self.screen.fill((0, 255, 255))
-            
-            self.cloudOne.draw(self.screen)
-            self.cloudTwo.draw(self.screen)
-            
-            self.pipeOne.drawPipes(self.screen)
-            self.pipeOne.updatePosition()
-            
-            self.pipeTwo.drawPipes(self.screen)
-            self.pipeTwo.updatePosition()
-            
-            self.bird.display(self.screen)
-            self.bird.moveDown()
-            
-            if 200 < self.pipeOne.xpos < 201:
-                self.pipeTwo = Pipes()
-                
-            if self.pipeOne.xpos < -50:
-                self.pipeOne = Pipes()
-            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -129,29 +109,59 @@ class Controls:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.bird.moveUp()
-            
-            if self.bird.getRect().colliderect(self.pipeOne.rectOne()) or self.bird.getRect().colliderect(self.pipeOne.rectTwo()):
-                self.state  ="END"
-               
-            if self.bird.getRect().colliderect(self.pipeTwo.rectOne()) or self.bird.getRect().colliderect(self.pipeTwo.rectTwo()):
+
+            if self.bird.getRect().colliderect(
+                self.pipeOne.rectOne()
+            ) or self.bird.getRect().colliderect(self.pipeOne.rectTwo()):
                 self.state = "END"
-            
+
+            if self.bird.getRect().colliderect(
+                self.pipeTwo.rectOne()
+            ) or self.bird.getRect().colliderect(self.pipeTwo.rectTwo()):
+                self.state = "END"
+
             if self.bird.getY() >= 500 or self.bird.getY() <= -50:
                 self.state = "END"
-            
-            if self.bird.getRect().colliderect(self.pipeOne.scorePoint()) or self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
-                if self.collision_occured == False: 
+
+            if self.bird.getRect().colliderect(
+                self.pipeOne.scorePoint()
+            ) or self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
+                if not self.collision_occured:
                     self.score += 1
                     self.collision_occured = True
-            
-            if not self.bird.getRect().colliderect(self.pipeOne.scorePoint()) and not self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
-                    self.collision_occured = False 
-            
-            number = self.font.render(str(self.score), True, (255, 255, 255))  
+
+            if not self.bird.getRect().colliderect(
+                self.pipeOne.scorePoint()
+            ) and not self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
+                self.collision_occured = False
+
+            # 1. Handle events
+            self.screen.fill((0, 255, 255))
+
+            self.cloudOne.draw(self.screen)
+            self.cloudTwo.draw(self.screen)
+
+            self.pipeOne.drawPipes(self.screen)
+            self.pipeOne.updatePosition()
+
+            self.pipeTwo.drawPipes(self.screen)
+            self.pipeTwo.updatePosition()
+
+            self.bird.display(self.screen)
+            self.bird.moveDown()
+
+            if 200 < self.pipeOne.xpos < 201:
+                del self.pipeTwo
+                self.pipeTwo = Pipes()
+
+            if self.pipeOne.xpos < -50:
+                del self.pipeOne
+                self.pipeOne = Pipes()
+            number = self.font.render(str(self.score), True, (255, 255, 255))
             text_rect = number.get_rect()
-            text_rect.topleft = (10, 10) 
+            text_rect.topleft = (10, 10)
             self.screen.blit(number, text_rect)
-            
+
             pygame.display.update()
             
     def mainloop(self):
