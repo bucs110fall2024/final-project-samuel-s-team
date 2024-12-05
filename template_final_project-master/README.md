@@ -53,4 +53,3 @@ I'm making a flappy bird game with the bird being red from angry birds. The game
 |  4                   | Passes a pipe        |The score on the top right increases by 1 
 |  5                   | Collides with a pipe |The end screen pops up and the user has the option to restart or end game 
 |  6                   | User presses either button | The game either restarts or the GUI window ends 
-etc...
