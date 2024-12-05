@@ -123,16 +123,12 @@ class Controls:
             if self.bird.getY() >= 500 or self.bird.getY() <= -50:
                 self.state = "END"
 
-            if self.bird.getRect().colliderect(
-                self.pipeOne.scorePoint()
-            ) or self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
+            if self.bird.getRect().colliderect(self.pipeOne.scorePoint()) or self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
                 if not self.collision_occured:
                     self.score += 1
                     self.collision_occured = True
 
-            if not self.bird.getRect().colliderect(
-                self.pipeOne.scorePoint()
-            ) and not self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
+            if not self.bird.getRect().colliderect(self.pipeOne.scorePoint()) and not self.bird.getRect().colliderect(self.pipeTwo.scorePoint()):
                 self.collision_occured = False
 
             # 1. Handle events
