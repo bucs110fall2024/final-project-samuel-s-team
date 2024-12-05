@@ -12,7 +12,7 @@ Samuel Yu
 
 ## Project Description
 
-I'm making a flappy bird game with the bird being red from angry birds. The game will have a start menu with the option to start the game. Once the game is started the user will have to press the space bar to move the bird up and avoid the pipes. With each pair of pipes the user goes through the score displayed on the screen will increase by one. If the user collides with one of the pipes the game ends and the user is brought to the end menu where they will have the option to start over or end the game. You also can't double tap fast as that'll make the bird lose control. 
+I'm making a flappy bird game with the bird being red from angry birds. The game will have a start menu with the option to start the game. Once the game is started the user will have to press the space bar to move the bird up and avoid the pipes. With each pair of pipes the user goes through the score displayed on the screen will increase by one. If the user collides with one of the pipes the game ends and the user is brought to the end menu where they will have the option to start over or end the game. When you double tap the bird also accelerations more upward. 
 ***    
 
 ## GUI Design
